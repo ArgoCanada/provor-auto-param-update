@@ -14,6 +14,7 @@ url, username, password = ppy.get_ftp_info()
 ftp = ftplib.FTP(url, user=username, passwd=password)
 ct = pd.Timestamp('now', tz='utc')
 imei_numbers = ftp.nlst()
+logfile = 'log/auto-update-log.log'
 
 #------------------------------------------------------------------------------
 # check timing info, previous commands
@@ -31,6 +32,8 @@ for imei in imei_numbers:
     last_command_time = ppy.file_time(ftp.nlst(f'{imei}/*cmd.txt'))
     recent_command = abs(last_command_time - last_profile_time) < pd.Timedelta(hours=12)
     param_update = no_command_file_exists and within_last_day and recent_command
+
+    print(imei, last_profile_time)
 
     if param_update:
 
@@ -53,3 +56,6 @@ for imei in imei_numbers:
             
             with open(filename, 'rb') as f:
                 ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
+            
+            with open(logfile, 'a') as f:
+                f.write(f'\n[{ct.year}-{ct.month}-{ct.day}] Updated {imei} surfacing time from {df.Value.loc["PM 4"]} to {new_time}')
