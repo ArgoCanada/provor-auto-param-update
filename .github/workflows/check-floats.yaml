@@ -24,15 +24,14 @@ jobs:
         run: |
           python update-params.py
       - name: Check for changes
-        run: git status
-      - name: Stage changed files
-        run: git add .
-      - name: Commit changed files
+        id: changes
+        uses: UnicornGlobal/has-changes-action@v1.0.11
+      - name: Commit, stage, and push changed files
+        if: steps.changes.outputs.changed == 1
         run: |
+          git add .
           git config --local user.email "argo.canada.bot@gmail.com"
           git config --local user.name "Argo Canada Bot"
           git commit -m "Log auto parameter timing command changes"
-      - name: Fetch from main
-        run: git fetch origin main
-      - name: Push code to main
-        run: git push origin HEAD:main
+          git fetch origin main
+          git push origin HEAD:main
