@@ -8,7 +8,6 @@ import provorpy as ppy
 
 update_from_command_file = True
 update_from_user_list = False
-manual_override = True
 
 #------------------------------------------------------------------------------
 # connect to DFO FTP server
@@ -52,26 +51,25 @@ for imei in imei_numbers:
         ftp.retrbinary(f'RETR {last_command_file}', r.write)
         df = ppy.read_cmd_response(r)
 
-        if 'PM 4' in df.index or manual_override:
-            if update_from_command_file:
-                new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
-                new_time = new_time + 24 if new_time < 0 else new_time
-            elif update_from_user_list:
-                df = pd.read_csv('time_list.csv')
-                new_time = df.param.iloc[0]
-                df.iloc[:-1] = df.iloc[1:]
-                df.iloc[-1] = new_time
-                df.to_csv('time_list.csv')
-            else:
-                raise ValueError('No source for new time selected')
+        if update_from_command_file:
+            new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
+            new_time = new_time + 24 if new_time < 0 else new_time
+        elif update_from_user_list:
+            df = pd.read_csv('time_list.csv')
+            new_time = df.param.iloc[0]
+            df.iloc[:-1] = df.iloc[1:]
+            df.iloc[-1] = new_time
+            df.to_csv('time_list.csv')
+        else:
+            raise ValueError('No source for new time selected')
+    
+        filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_time_update_cmd.txt'
+        with open(filename, 'w') as f:
+            f.write(f'!PM 4 {new_time:d}\r\n')
         
-            filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_time_update_cmd.txt'
-            with open(filename, 'w') as f:
-                f.write(f'!PM 4 {new_time:d}\r\n')
-            
-            with open(filename, 'rb') as f:
-                ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
-            
-            with open(logfile, 'a') as f:
-                old_time = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
-                f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {old_time} to {new_time}')
+        with open(filename, 'rb') as f:
+            ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
+        
+        with open(logfile, 'a') as f:
+            old_time = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
+            f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {old_time} to {new_time}')
