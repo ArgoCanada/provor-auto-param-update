@@ -42,16 +42,15 @@ for imei in imei_numbers:
 
         print(f'Updating {imei}...')
 
-        # check time of command file - make sure it corresponds to this profile
-        # effectively this means that the process must be manually started with 
-        # human uploading a command file. Note sending PV=0 to tested floats could
-        # cause an exception to this rule
-        last_command_file = ftp.nlst(f'{imei}/*.txt')[-1]
-        r = BytesIO()
-        ftp.retrbinary(f'RETR {last_command_file}', r.write)
-        df = ppy.read_cmd_response(r)
-
         if update_from_command_file:
+            # check time of command file - make sure it corresponds to this profile
+            # effectively this means that the process must be manually started with 
+            # human uploading a command file. Note sending PV=0 to tested floats could
+            # cause an exception to this rule
+            last_command_file = ftp.nlst(f'{imei}/*.txt')[-1]
+            r = BytesIO()
+            ftp.retrbinary(f'RETR {last_command_file}', r.write)
+            df = ppy.read_cmd_response(r)
             new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
             new_time = new_time + 24 if new_time < 0 else new_time
         elif update_from_user_list:
