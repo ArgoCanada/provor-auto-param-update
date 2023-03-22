@@ -54,7 +54,7 @@ for imei in imei_numbers:
 
         if 'PM 4' in df.index or manual_override:
             if update_from_command_file:
-                new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else 7
+                new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
                 new_time = new_time + 24 if new_time < 0 else new_time
             elif update_from_user_list:
                 df = pd.read_csv('time_list.csv')
@@ -73,4 +73,5 @@ for imei in imei_numbers:
                 ftp.storbinary(f'STOR {imei}/remote/RUDICS_cmd.txt', f)
             
             with open(logfile, 'a') as f:
-                f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {df.Value.loc["PM 4"]} to {new_time}')
+                old_value = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
+                f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {} to {new_time}')
