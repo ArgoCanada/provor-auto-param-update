@@ -8,6 +8,7 @@ import provorpy as ppy
 
 update_from_command_file = True
 update_from_user_list = False
+manual_override = True
 
 #------------------------------------------------------------------------------
 # connect to DFO FTP server
@@ -51,9 +52,9 @@ for imei in imei_numbers:
         ftp.retrbinary(f'RETR {last_command_file}', r.write)
         df = ppy.read_cmd_response(r)
 
-        if 'PM 4' in df.index:
+        if 'PM 4' in df.index or manual_override:
             if update_from_command_file:
-                new_time = df.Value.loc['PM 4'] - 5
+                new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else 7
                 new_time = new_time + 24 if new_time < 0 else new_time
             elif update_from_user_list:
                 df = pd.read_csv('time_list.csv')
