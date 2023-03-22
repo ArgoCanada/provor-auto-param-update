@@ -21,13 +21,8 @@ jobs:
           pip install pandas
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Run script
-        run: |
-          python update-params.py
-      - name: Check for uncommitted changes
-        id: check-changes
-        uses: mskri/check-uncommitted-changes-action@v1.0.1
+        run: python update-params.py
       - name: Commit changes
-        if: steps.check-changes.outputs.changes != ''
         run: |
           git add .
           git config --local user.email "argo.canada.bot@gmail.com"
