@@ -11,7 +11,7 @@ Basic steps of the workflow:
     - get latest profile time, and check the following conditions:
         - was there a profile withing the last 1 day?
         - ensure a RUDICS_cmd.txt file does not already exist
-        - is there a command respone associated with the last profile?
+        - is there a command respone associated with the last profile? (`[date]_[time]_[imei]_RUDICS_cmd.txt`)
     - if all the above conditions are met, then: 
         - select a new surfacing time, either based on previous command file, or a user defined list
         - create a RUDICS_cmd.txt file and upload to the ftp
