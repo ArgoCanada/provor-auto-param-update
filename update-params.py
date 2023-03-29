@@ -1,5 +1,6 @@
 #!/usr/env/python
 
+import sys
 import ftplib
 from io import BytesIO
 
@@ -13,7 +14,8 @@ update_from_user_list = False
 # connect to DFO FTP server
 #------------------------------------------------------------------------------
 
-url, username, password = ppy.get_ftp_info()
+password = sys.argv[1]
+url, username = ppy.get_ftp_info()
 ftp = ftplib.FTP(url, user=username, passwd=password)
 ct = pd.Timestamp('now', tz='utc')
 imei_numbers = ftp.nlst()

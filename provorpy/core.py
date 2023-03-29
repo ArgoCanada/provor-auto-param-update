@@ -17,9 +17,8 @@ def get_ftp_info():
 
     url = cfg_copy['ftp_url']
     user = cfg_copy['ftp_username']
-    passwd = cfg_copy['ftp_password']
 
-    return url, user, passwd
+    return url, user
 
 def file_time(file):
 
