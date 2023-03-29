@@ -9,7 +9,7 @@ def get_ftp_info():
     config = configure.read_config()
     cfg_copy = copy.deepcopy(config)
 
-    for k in ['ftp_url', 'ftp_username', 'ftp_password']:
+    for k in ['ftp_url', 'ftp_username']:
         if k not in config.keys():
             ks = k.replace('ftp_', '')
             warn(f'FTP {ks} not in .config file, returning blank string. Add it by running provorpy.configure.configure({k}=...')
