@@ -45,8 +45,8 @@ for imei in imei_list:
     new_time = np.random.randint(24) if randomize else user_time
     with open(filename, 'w') as f:
         f.write(f'!PM 4 {new_time:d}\r\n')
-    # with open(filename, 'rb') as f:
-    #     ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
+    with open(filename, 'rb') as f:
+        ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
 
 with open(logfile, 'a') as f:
     f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] {user_message}')
