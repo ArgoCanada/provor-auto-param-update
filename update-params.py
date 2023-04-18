@@ -34,7 +34,12 @@ for imei in imei_numbers:
     # already exists a command file, we don't need to upload a new one so exclude that float
     # this will also prevent overriding command files that may have been uploaded manually
     no_command_file_exists = f'{imei}/RUDICS_cmd.txt' not in ftp.nlst(f'{imei}/*')
-    within_last_day = ct - last_profile_time < pd.Timedelta(hours=25*7)
+    if not no_command_file_exists:
+        # get command file age
+        command_file_age = ct - pd.Timestamp(ftp.voidcmd(f'MDTM {imei}/RUDICS_cmd.txt')[4:])
+        if command_file_age > pd.Timedelta(days=11):
+            no_command_file_exists = True
+    within_last_day = ct - last_profile_time < pd.Timedelta(days=2)
     last_command_time = ppy.file_time(ftp.nlst(f'{imei}/*cmd.txt'))
     recent_command = abs(last_command_time - last_profile_time) < pd.Timedelta(hours=12)
     param_update = no_command_file_exists and within_last_day and recent_command
