@@ -36,7 +36,7 @@ for imei in imei_numbers:
     no_command_file_exists = f'{imei}/RUDICS_cmd.txt' not in ftp.nlst(f'{imei}/*')
     if not no_command_file_exists:
         # get command file age
-        command_file_age = ct - pd.Timestamp(ftp.voidcmd(f'MDTM {imei}/RUDICS_cmd.txt')[4:])
+        command_file_age = ct - pd.Timestamp(ftp.voidcmd(f'MDTM {imei}/RUDICS_cmd.txt')[4:], tz='utc')
         if command_file_age > pd.Timedelta(days=11):
             no_command_file_exists = True
     within_last_day = ct - last_profile_time < pd.Timedelta(days=2)
