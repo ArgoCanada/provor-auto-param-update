@@ -33,7 +33,7 @@ for imei in imei_numbers:
     # if the timing window is implemented properly, this is redundant, but essentially if there
     # already exists a command file, we don't need to upload a new one so exclude that float
     # this will also prevent overriding command files that may have been uploaded manually
-    no_command_file_exists = f'{imei}/RUDICS_cmd.txt' not in ftp.nlst(f'{imei}/*')
+    no_command_file_exists = f'{imei}/remote/RUDICS_cmd.txt' not in ftp.nlst(f'{imei}/*')
     if not no_command_file_exists:
         # get command file age
         command_file_age = ct - pd.Timestamp(ftp.voidcmd(f'MDTM {imei}/RUDICS_cmd.txt')[4:], tz='utc')
@@ -74,7 +74,7 @@ for imei in imei_numbers:
             f.write(f'!PM 4 {new_time:d}\r\n')
         
         with open(filename, 'rb') as f:
-            ftp.storbinary(f'STOR {imei}/RUDICS_cmd.txt', f)
+            ftp.storbinary(f'STOR {imei}/remote/RUDICS_cmd.txt', f)
         
         with open(logfile, 'a') as f:
             old_time = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
