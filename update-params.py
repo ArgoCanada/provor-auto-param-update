@@ -21,6 +21,14 @@ ct = pd.Timestamp('now', tz='utc')
 imei_numbers = ftp.nlst()
 logfile = 'log/auto-update-log.log'
 
+imei_exclude = ['300125061075760', '300125061070720']
+
+print(imei_numbers)
+
+imei_numbers = list(set(imei_numbers) - set(imei_exclude))
+
+print(imei_numbers)
+
 #------------------------------------------------------------------------------
 # check timing info, previous commands
 #------------------------------------------------------------------------------
@@ -50,8 +58,8 @@ for imei in imei_numbers:
             df = ppy.read_cmd_response(r)
             new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
             new_time = new_time + 24 if new_time < 0 else new_time
-        elif update_from_user_list:
-            df = pd.read_csv('time_list.csv')
+        elif update_from_user_list: # this does not work right now - need a way to do it per float?
+            df = pd.read_csv(f'{imei}_time_list.csv')
             new_time = df.param.iloc[0]
             df.iloc[:-1] = df.iloc[1:]
             df.iloc[-1] = new_time
