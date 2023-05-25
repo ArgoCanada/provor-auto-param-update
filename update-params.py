@@ -80,6 +80,6 @@ for imei in imei_numbers:
             old_time = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
             f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {old_time} to {new_time}')
     
-if update:
+if not update:
     with open(logfile, 'a') as f:
         f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] No floats to be updated today')
