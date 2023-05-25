@@ -33,6 +33,7 @@ print(imei_numbers)
 # check timing info, previous commands
 #------------------------------------------------------------------------------
 
+update = False
 for imei in imei_numbers:
 
     # get most recent profile time for each float
@@ -45,6 +46,7 @@ for imei in imei_numbers:
 
     if param_update:
 
+        update = True
         print(f'Updating {imei}...')
 
         if update_from_command_file:
@@ -78,6 +80,6 @@ for imei in imei_numbers:
             old_time = df.Value.loc['PM 4'] if 'PM 4' in df.index else last_profile_time.hour
             f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} surfacing time from {old_time} to {new_time}')
     
-    else:
-        with open(logfile, 'a') as f:
-            f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] No floats to be updated today')
+if update:
+    with open(logfile, 'a') as f:
+        f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] No floats to be updated today')
