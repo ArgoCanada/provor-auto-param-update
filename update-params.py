@@ -21,7 +21,7 @@ ct = pd.Timestamp('now', tz='utc')
 imei_numbers = ftp.nlst()
 logfile = 'log/auto-update-log.log'
 
-imei_exclude = ['300125061075760', '300125061070720']
+imei_exclude = ['300125061070720']
 
 print(imei_numbers)
 
