@@ -43,7 +43,7 @@ for imei in imei_numbers:
     within_last_day = ct - last_profile_time < pd.Timedelta(hours=26)
     last_command_time = ppy.file_time(ftp.nlst(f'{imei}/*cmd.txt'))
     recent_command = abs(last_command_time - last_profile_time) < pd.Timedelta(hours=12)
-    param_update = within_last_day 
+    param_update = within_last_day
 
     if param_update:
 
@@ -61,7 +61,7 @@ for imei in imei_numbers:
             df = ppy.read_cmd_response(r)
             new_time = df.Value.loc['PM 4'] - 5 if 'PM 4' in df.index else last_profile_time.hour - 5
             new_time = new_time + 24 if new_time < 0 else new_time
-        elif update_from_user_list: # this does not work right now - need a way to do it per float?
+        elif update_from_user_list: # this does not work right now - need a way to do it per float?   
             df = pd.read_csv(f'{imei}_time_list.csv')
             new_time = df.param.iloc[0]
             df.iloc[:-1] = df.iloc[1:]
@@ -73,6 +73,24 @@ for imei in imei_numbers:
         filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_time_update_cmd.txt'
         with open(filename, 'w') as f:
             f.write(f'!PM 4 {new_time:d}\r\n')
+            # CTD descent params
+            f.write(f'!PC 0 0 2 0\r\n')
+            f.write(f'!PC 0 0 11 0\r\n')
+            f.write(f'!PC 0 0 20 0\r\n')
+            f.write(f'!PC 0 0 29 0\r\n')
+            f.write(f'!PC 0 0 38 0\r\n')
+            # Optode descent params
+            f.write(f'!PC 1 0 2 0\r\n')
+            f.write(f'!PC 1 0 11 0\r\n')
+            f.write(f'!PC 1 0 20 0\r\n')
+            f.write(f'!PC 1 0 29 0\r\n')
+            f.write(f'!PC 1 0 38 0\r\n')
+            # ECO descent params
+            f.write(f'!PC 3 0 2 0\r\n')
+            f.write(f'!PC 3 0 11 0\r\n')
+            f.write(f'!PC 3 0 20 0\r\n')
+            f.write(f'!PC 3 0 29 0\r\n')
+            f.write(f'!PC 3 0 38 0\r\n')
         
         with open(filename, 'rb') as f:
             ftp.storbinary(f'STOR {imei}/remote/RUDICS_cmd.txt', f)
