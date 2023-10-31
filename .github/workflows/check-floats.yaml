@@ -19,7 +19,7 @@ jobs:
           pip install pandas
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Run script
-        run: python update-params.py ${{ secrets.FTP_PASS }}
+        run: python update-params.py ${{ secrets.FTP_DOMAIN }} ${{ secrets.FTP_USER }} ${{ secrets.FTP_PASS }}
       - name: Commit changes
         run: |
           git add .

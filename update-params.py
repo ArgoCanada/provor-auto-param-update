@@ -14,8 +14,9 @@ update_from_user_list = False
 # connect to DFO FTP server
 #------------------------------------------------------------------------------
 
-password = sys.argv[1]
-url, username = ppy.get_ftp_info()
+url = sys.argv[1]
+username = sys.argv[2]
+password = sys.argv[3]
 ftp = ftplib.FTP(url, user=username, passwd=password)
 ct = pd.Timestamp('now', tz='utc')
 imei_numbers = ftp.nlst()
