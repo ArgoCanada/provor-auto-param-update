@@ -92,6 +92,12 @@ for imei in imei_numbers:
             f.write(f'!PC 3 0 20 0\r\n')
             f.write(f'!PC 3 0 29 0\r\n')
             f.write(f'!PC 3 0 38 0\r\n')
+            # Seafet descent params
+            f.write(f'!PC 4 0 2 0\r\n')
+            f.write(f'!PC 4 0 11 0\r\n')
+            f.write(f'!PC 4 0 20 0\r\n')
+            f.write(f'!PC 4 0 29 0\r\n')
+            f.write(f'!PC 4 0 38 0\r\n')
         
         with open(filename, 'rb') as f:
             ftp.storbinary(f'STOR {imei}/remote/RUDICS_cmd.txt', f)
