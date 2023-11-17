@@ -23,16 +23,14 @@ imei_numbers = ftp.nlst()
 logfile = 'log/auto-update-log.log'
 
 # list of any floats to exclude - possibly because manual command was uploaded
-imei_exclude = [
-    '300125062902880', '300125062426150', '300125062423120', # cts5
-    '300125062031400', '300125062035430', '300534060123910'  # cts5
+imei_exclude = []
+
+cts5_floats = [
+    '300125062902880', '300125062426150', '300125062423120',
+    '300125062031400', '300125062035430', '300534060123910'
 ]
 
-print(imei_numbers)
-
-imei_numbers = list(set(imei_numbers) - set(imei_exclude))
-
-print(imei_numbers)
+imei_numbers = list(set(imei_numbers) - set(imei_exclude) - set(cts5_floats))
 
 #------------------------------------------------------------------------------
 # check timing info, previous commands
