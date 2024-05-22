@@ -75,30 +75,7 @@ for imei in imei_numbers:
         filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_time_update_cmd.txt'
         with open(filename, 'w') as f:
             f.write(f'!PM 4 {new_time:d}\r\n')
-            # CTD descent params
-            f.write(f'!PC 0 0 2 0\r\n')
-            f.write(f'!PC 0 0 11 0\r\n')
-            f.write(f'!PC 0 0 20 0\r\n')
-            f.write(f'!PC 0 0 29 0\r\n')
-            f.write(f'!PC 0 0 38 0\r\n')
-            # Optode descent params
-            f.write(f'!PC 1 0 2 0\r\n')
-            f.write(f'!PC 1 0 11 0\r\n')
-            f.write(f'!PC 1 0 20 0\r\n')
-            f.write(f'!PC 1 0 29 0\r\n')
-            f.write(f'!PC 1 0 38 0\r\n')
-            # ECO descent params
-            f.write(f'!PC 3 0 2 0\r\n')
-            f.write(f'!PC 3 0 11 0\r\n')
-            f.write(f'!PC 3 0 20 0\r\n')
-            f.write(f'!PC 3 0 29 0\r\n')
-            f.write(f'!PC 3 0 38 0\r\n')
-            # Seafet descent params
-            f.write(f'!PC 4 0 2 0\r\n')
-            f.write(f'!PC 4 0 11 0\r\n')
-            f.write(f'!PC 4 0 20 0\r\n')
-            f.write(f'!PC 4 0 29 0\r\n')
-            f.write(f'!PC 4 0 38 0\r\n')
+            f.write('!PC 0 1 4 2\r\n')
         
         with open(filename, 'rb') as f:
             ftp.storbinary(f'STOR {imei}/remote/RUDICS_cmd.txt', f)
