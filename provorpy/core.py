@@ -43,7 +43,7 @@ def file_time(file, kind='cts4'):
     if hasattr(file, '__iter__') and len(file) == 0:
         return pd.Timestamp('1950-01-01', tz='utc')
     f = file[-1] if hasattr(file, '__iter__') else file
-    f = file[-2] if f.split('_')[0] == 'RUDICS_cmd.txt' else f
+    f = file[-2] if f.split('/')[-1] == 'RUDICS_cmd.txt' else f
 
     if kind == 'cts4':
         date_string = f.split('/')[-1].split('_')[0]

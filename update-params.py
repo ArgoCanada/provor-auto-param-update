@@ -50,6 +50,7 @@ for imei in imei_numbers:
     last_profile_time = ppy.file_time(ftp.nlst(f'{imei}/*.bin'))
     print(imei, last_profile_time)
     within_last_day = ct - last_profile_time < pd.Timedelta(hours=26)
+    print(ftp.nlst(f'{imei}/*cmd.txt'))
     last_command_time = ppy.file_time(ftp.nlst(f'{imei}/*cmd.txt'))
     recent_command = abs(last_command_time - last_profile_time) < pd.Timedelta(hours=12)
     param_update = within_last_day
