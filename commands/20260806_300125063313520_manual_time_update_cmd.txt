@@ -1,0 +1,5 @@
+!param-sensor_04-14:10
+!param-sensor_04-23:50
+!param-sensor_04-32:50
+!param-sensor_04-41:2
+!param-sensor_04-49:1980
