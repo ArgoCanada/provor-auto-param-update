@@ -1,0 +1,3 @@
+!param-pattern_01-1:1000
+!param-pattern_01-2:1000
+!param-sensor_04-49:980
