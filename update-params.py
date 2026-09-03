@@ -80,7 +80,7 @@ for imei in imei_numbers:
         else:
             raise ValueError('No source for new time selected')
     
-        filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_time_update_cmd.txt'
+        filename = f'commands/{ct.year:04d}{ct.month:02d}{ct.day:02d}_{imei}_auto_time_update_cmd.txt'
         with open(filename, 'w') as f:
             f.write(f'!PM 4 {new_time:d}\r\n')
             f.write('!PC 0 1 4 2\r\n')
@@ -96,7 +96,15 @@ for imei in imei_numbers:
 # alternate parking depth - specific CTS5 floats
 #------------------------------------------------------------------------------
 
-alternating_parking_floats = ['300125062035430']
+alternating_parking_floats = [
+    '300125062031400',
+    '300125062035430',
+    '300125062423120',
+    '300125062426150',
+    '300125062902880',
+    '300125062907910',
+    '300125062909910',
+]
 
 for imei in alternating_parking_floats:
     # get most recent profile time for each float
@@ -115,26 +123,34 @@ for imei in alternating_parking_floats:
         update = True
         print(f'Updating {imei}...')
 
-        filename = f'commands/{ct.year}{ct.month}{ct.day}_{imei}_auto_park_update_cmd.txt'
+        filename = f'commands/{ct.year:04d}{ct.month:02d}{ct.day:02d}_{imei}_auto_park_update_cmd.txt'
         with open(filename, 'w') as f:
             if cycle % 2 == 0:
                 old_depth = 1000
                 new_depth = 2000
                 f.write('!param-pattern_01-1:2000\r\n')
                 f.write('!param-pattern_01-2:2000\r\n')
+                f.write('!param-sensor_04-14:10\r\n')
+                f.write('!param-sensor_04-23:30\r\n')
+                f.write('!param-sensor_04-32:30\r\n')
+                f.write('!param-sensor_04-41:2\r\n')
                 f.write('!param-sensor_04-49:1980\r\n')
             else:
                 old_depth = 2000
                 new_depth = 1000
                 f.write('!param-pattern_01-1:1000\r\n')
                 f.write('!param-pattern_01-2:1000\r\n')
+                f.write('!param-sensor_04-14:10\r\n')
+                f.write('!param-sensor_04-23:30\r\n')
+                f.write('!param-sensor_04-32:30\r\n')
+                f.write('!param-sensor_04-41:2\r\n')
                 f.write('!param-sensor_04-49:980\r\n')
         
         with open(filename, 'rb') as f:
             ftp.storbinary(f'STOR {imei}/remote/_command.txt', f)
         
         with open(logfile, 'a') as f:
-            f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} park depth time from {old_depth} to {new_depth}')
+            f.write(f'\n[{ct.year:04d}-{ct.month:02d}-{ct.day:02d}] Updated {imei} park depth from {old_depth} to {new_depth}')
             
 if not update:
     with open(logfile, 'a') as f:
