@@ -17,16 +17,17 @@ user_time = 8 # only used if `randomize` is false
 all_floats = False # upload to all active floats if true
 # only used if `all_floats` is false
 user_imei_list = [
-    '300125062902880', '300125062426150', '300125062423120',
-    '300125062031400', '300125062035430', '300534060123910',
-    '300125062907910', '300125062909910', '300125063319510',
-    '300125063310200', '300125063315260', '300125063318510',
-    '300125063419060', '300125063414050', '300125063413300',
-    '300125063217740', '300125063211730', '300125063213730',
-    '300125063215730', '300125063415280', '300125063313520',
-    '300125063411300', '300125063318200', '300125063217730',
-    '300125063128670', '300125063212730', '300125063712060',
+    '300125063031850','300125063036340','300125063039340',
+    '300125063039350','300125063128670','300125063210740',
+    '300125063211730','300125063212730','300125063213730',
+    '300125063215730','300125063217730','300125063217740',
+    '300125063218730','300125063219720','300125063310200',
+    '300125063313520','300125063315260','300125063318200',
+    '300125063318510','300125063319510','300125063411300',
+    '300125063412290','300125063413300','300125063414050',
+    '300125063415280','300125063419060','300125063829950',
 ] 
+
 exclude_floats = ['300125000000000'] # exclude floats from "all", only used if `all_floats` is true
 
 user_message = f'Update vertical resolution of CTS5 bio-optics'
@@ -64,11 +65,11 @@ for imei in imei_list:
     filename = f'commands/{ct.year}{ct.month:02d}{ct.day:02d}_{imei}_manual_time_update_cmd.txt'
     new_time = np.random.randint(24) if randomize else user_time
     with open(filename, 'w') as f:
-        f.write('!param-sensor_04-14:10\r\n')
-        f.write('!param-sensor_04-23:50\r\n')
-        f.write('!param-sensor_04-32:50\r\n')
-        f.write('!param-sensor_04-41:2\r\n')
-        f.write('!param-sensor_04-49:1980\r\n')
+        f.write('!param-sensor_24-14:10\r\n')
+        f.write('!param-sensor_24-23:50\r\n')
+        f.write('!param-sensor_24-32:50\r\n')
+        f.write('!param-sensor_24-41:2\r\n')
+        f.write('!param-sensor_24-49:1980\r\n')
     with open(filename, 'rb') as f:
         ftp.storbinary(f'STOR {imei}/remote/_command.txt', f)
 
