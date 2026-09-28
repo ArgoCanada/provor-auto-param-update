@@ -96,14 +96,17 @@ for imei in imei_numbers:
 # alternate parking depth - specific CTS5 floats
 #------------------------------------------------------------------------------
 
+# Chris' note: I am turning this off as it can be better accomplished with 
+# _script.txt onboard the PROVOR itself, leaving the code for posterity
+
 alternating_parking_floats = [
-    '300125062031400',
-    '300125062035430',
-    '300125062423120',
-    '300125062426150',
-    '300125062902880',
-    '300125062907910',
-    '300125062909910',
+    # '300125062031400',
+    # '300125062035430',
+    # '300125062423120',
+    # '300125062426150',
+    # '300125062902880',
+    # '300125062907910',
+    # '300125062909910',
 ]
 
 for imei in alternating_parking_floats:
